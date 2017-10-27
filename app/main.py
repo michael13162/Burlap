@@ -73,8 +73,12 @@ def courses():
     else:
         return abort(400)
 
+@app.route('/api/courses/<course_id>/files', methods=['POST'])
+def upload_file(course_id):
+    return abort(418)
+
 @app.route('/api/files/<file_id>', methods=['GET'])
-def files(file_id):
+def get_files(file_id):
     path = app.static_folder + '\\files\\' + file_id
     files = [f for f in listdir(path) if isfile(join(path, f))]
     if len(files) == 0:
@@ -83,6 +87,10 @@ def files(file_id):
         return abort(500)
     return send_from_directory(path, filename=files[0])
 
-
+@app.route('/api/courses/<course_id>/files?search=<search_string>', methods=['GET'])
+def search_files(course_id, search_string):
+    print(course_id)
+    print(search_string)
+    return abort(418)
 
 app.run()
