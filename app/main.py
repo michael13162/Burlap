@@ -23,13 +23,15 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 # [END create_app]
 
+###############################################
+# Start of form code (unrelated to application)
+###############################################
 
 # [START form]
 @app.route('/form')
 def form():
     return render_template('form.html')
 # [END form]
-
 
 # [START submitted]
 @app.route('/submitted', methods=['POST'])
@@ -56,3 +58,15 @@ def server_error(e):
     logging.exception('An error occurred during a request.')
     return 'An internal error occurred.', 500
 # [END app]
+
+#############################################
+# End of form code (unrelated to application)
+#############################################
+
+@app.route('/api/courses', methods=['GET', 'POST'])
+def courses():
+    print(request.type)
+    if request.type == 'GET':
+        
+
+app.run()
