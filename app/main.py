@@ -14,13 +14,15 @@
 
 # [START app]
 import logging
+from os import listdir
+from os.path import isfile, join
 
 # [START imports]
-from flask import Flask, render_template, request
+from flask import Flask, abort, render_template, request, send_from_directory
 # [END imports]
 
 # [START create_app]
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 # [END create_app]
 
 ###############################################
@@ -51,7 +53,6 @@ def submitted_form():
         comments=comments)
     # [END render_template]
 
-
 @app.errorhandler(500)
 def server_error(e):
     # Log the error and stacktrace.
@@ -65,8 +66,23 @@ def server_error(e):
 
 @app.route('/api/courses', methods=['GET', 'POST'])
 def courses():
-    print(request.type)
-    if request.type == 'GET':
-        
+    if request.method == 'GET':
+        return abort(400)
+    elif request.method == 'POST':
+        return abort(400)
+    else:
+        return abort(400)
+
+@app.route('/api/files/<file_id>', methods=['GET'])
+def files(file_id):
+    path = app.static_folder + '\\files\\' + file_id
+    files = [f for f in listdir(path) if isfile(join(path, f))]
+    if len(files) == 0:
+        return abort(404)
+    elif len(files) >= 2:
+        return abort(500)
+    return send_from_directory(path, filename=files[0])
+
+
 
 app.run()
