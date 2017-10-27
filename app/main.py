@@ -67,11 +67,11 @@ def server_error(e):
 @app.route('/api/courses', methods=['GET', 'POST'])
 def courses():
     if request.method == 'GET':
-        return abort(400)
+        return abort(418)
     elif request.method == 'POST':
-        return abort(400)
+        return abort(418)
     else:
-        return abort(400)
+        return abort(418)
 
 @app.route('/api/courses/<course_id>/files', methods=['POST'])
 def upload_file(course_id):
@@ -93,4 +93,3 @@ def search_files(course_id, search_string):
     print(search_string)
     return abort(418)
 
-app.run()
