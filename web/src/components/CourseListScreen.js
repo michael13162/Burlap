@@ -45,7 +45,7 @@ const styles = {
     padding: spacing,
   },
   list: {
-    maxWidth: '300px',
+    maxWidth: '350px',
     border: `1px solid ${borderGrey}`,
     marginLeft: spacing,
   },
