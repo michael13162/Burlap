@@ -175,6 +175,8 @@ def upload_file(course_id):
 ####################################
             else:
                 return message_response(400, "Uploaded file has an unrecognized mimetype", 'application/json')
+        else:
+            return message_response(400, "Uploaded file does not have a supported extension", 'application/json')
 
 @app.route('/api/files/<file_id>', methods=['GET'])
 def get_file(file_id):
@@ -232,7 +234,7 @@ def read_pdf_file(file_path, file_name):
     converter.close()
     text = output.getvalue()
     output.close
-    return text 
+    return text
 
 def read_img_file(file_path, file_name):
     with io.open(os.path.join(file_path, file_name), 'rb') as image:
