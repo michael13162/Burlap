@@ -12,33 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START imports]
 import logging
 import json
 import uuid
 import os
+import cloud_vision as cv
+import elastic_search as es
 from os import listdir
 from os.path import dirname, isfile, join
 from flask import Flask, abort, render_template, request, Response, send_from_directory, url_for
-# [END imports]
 
-# [START app]
-
-# [START create_app]
 app = Flask(__name__, static_folder='static')
-# [END create_app]
 
 ###############################################
 # Start of form code (unrelated to application)
 ###############################################
 
-# [START form]
 @app.route('/form')
 def form():
     return render_template('form.html')
-# [END form]
 
-# [START submitted]
 @app.route('/submitted', methods=['POST'])
 def submitted_form():
     name = request.form['name']
@@ -46,22 +39,18 @@ def submitted_form():
     site = request.form['site_url']
     comments = request.form['comments']
 
-    # [END submitted]
-    # [START render_template]
     return render_template(
         'submitted_form.html',
         name=name,
         email=email,
         site=site,
         comments=comments)
-    # [END render_template]
 
 @app.errorhandler(500)
 def server_error(e):
     # Log the error and stacktrace.
     logging.exception('An error occurred during a request.')
     return 'An internal error occurred.', 500
-# [END app]
 
 #############################################
 # End of form code (unrelated to application)
@@ -82,6 +71,7 @@ def index():
 @app.route('/api/courses', methods=['GET', 'POST'])
 def courses():
     if request.method == 'GET':
+        '''
         js = [
                { 'name' : 'get_test_name',
                  'course_id' : 'get_test_course_id', 
@@ -91,12 +81,28 @@ def courses():
                  'thumbnail' : 'get_test_thumbnail'
                }
              ]
+        '''
+        js = []
+        for course in es.get_courses():
+            js.append({ 'name' : course[1], 
+                        'course_id' : course[0],
+                        'thumbnail' : 'TODO use actual thumbnail'
+                      })
         return Response(json.dumps(js),  mimetype='application/json')
+
     elif request.method == 'POST':
+        '''
         js = [ { 'name' : 'post_test_name',
                  'course_id' : 'post_test_course_id', 
                  'thumbnail' : 'post_test_thumbnail'
              } ]
+        '''
+        generated_id = es.create_course(request.data)
+        js = {
+                'name' : request.data,
+                'course_id' : generated_id,
+                'thumbnail' : 'TODO use actual thumbnail'
+             }
         return Response(json.dumps(js),  mimetype='application/json')
 
 @app.route('/api/courses/<course_id>/files', methods=['POST'])
