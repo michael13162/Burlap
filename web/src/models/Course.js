@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-export default Course = {
+export default {
   fromApi: (response) => ({
     name: response.name,
     courseId: response.course_id,

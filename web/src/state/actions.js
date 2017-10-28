@@ -2,6 +2,9 @@ import * as coursesService from '../services/coursesService';
 
 export function getCourses() {
   return (dispatch) => {
-    coursesService.getCourses();
+    coursesService.getCourses()
+    .then(courses => {
+      debugger;
+    });
   };
 }
