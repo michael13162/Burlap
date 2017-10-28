@@ -169,6 +169,7 @@ const styles = {
   },
   bodyWrapper: {
     marginLeft: spacing,
+    marginRight: spacing,
   },
   list: {
     maxWidth: listMaxWidth,
@@ -179,7 +180,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: listMaxWidth,
+    maxWidth: listMaxWidth,
     height: '96px',
     marginBottom: spacing,
     border: `3px dashed ${borderGrey}`,

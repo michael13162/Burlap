@@ -47,6 +47,7 @@ const styles = {
     maxWidth: listMaxWidth,
     border: listBorder,
     marginLeft: spacing,
+    marginRight: spacing,
   },
   tile: {
     backgroundColor: '#663399',
