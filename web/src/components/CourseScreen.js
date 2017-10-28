@@ -9,7 +9,7 @@ class CourseScreen extends Component {
     const formData = new FormData();
     formData.append('file', files[0]);
 
-    axios.post(`${this.props.match.params.courseId}/files`, formData);
+    axios.post(`courses/${this.props.match.params.courseId}/files`, formData);
   }
 
   render() {
