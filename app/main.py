@@ -130,4 +130,3 @@ def allowed_file(filename):
 def response(status_code, message, mime_type):
     return Response("{'message':" + message + "}", status=status_code, mimetype=mime_type)
 
-app.run()

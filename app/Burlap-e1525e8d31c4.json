@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "striking-optics-184201",
+  "private_key_id": "e1525e8d31c409df236d591ff5a5d805944bc264",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEugIBADANBgkqhkiG9w0BAQEFAASCBKQwggSgAgEAAoIBAQCVtfzqCSczkj6V\n+hqs4veqNUpRyjwjtKRHJkJn0TUGXhfqk9kYyTlAwrcQ+tVAcw6WLPTejzveAaMc\nQ1LfI629yNmDPRSdxAYOe9PvMVdemlqg9lUfKj0uRLxmJQCjk/9hE1lCSKWfMWdY\nDi7YOk8rfc/Fl5GiDL4ezqotC+vlKyMR7uRSbva5C69VBg29IXqGsngSElDZNBzH\nkbOuGTeqPM2Wvr0ySItmbhwD9LiGa8GKO3J0ZwR9wC5YyG3J2sm8JYgsHUXmOo9D\nocQHvZD3b48bFALPdoKQ4HvNwnT9ZjQIXbHvN79zDrFGad6Qf4cafhgaSWc0Tsph\nxSK4Keo7AgMBAAECgf9OXPQFjMT4OZSI7GEKHcOFVF+ScEkKZ4OVunEH5nna22Wp\nY7o/PxS40TMBsEnvckowUVfbJx4vFqxKHvNB2WsX7AnuqAoiinihHC/TBAC3hBPs\nLQRhS7q6fUAgNz4eYVlLdtVB3MTUjweJD+N1SxAls7UNuEiCiij59zMcYSEY0q56\nKEsZUhSqAqtWMWY5RYLwMrxQlIiTpgGNcslxUTe9t5KkGNQkFn8OALGeQK/U8NSu\n80FXXMil578qjVMtQWlQUuHq/ZJP1XEVnLhq/joCeEbeRNa8ChNblg0YZjVQDAzh\nAZwDh7vpy+eGG6M0OqFoNWdMz1iDPFD2lMESuTECgYEAykky5JfW08Y2KTfXt7qF\nGATxK4rRjACKABU2eplpoX25jcQeZLghrU/z4g9RsCAjmrgKPhMCXUsgiWUF3uMT\n1apRGg4FU5ScatePEUPAndHzLkjdvTBvoX3DqOK4XpmzdbbIvRnUaAaQDk8mxKe+\n0r5RPp+KQEZKYDi01rSy820CgYEAvXbkjoXW1o9REOncsOpnZe1LeWYsCzuo/6fv\nluai3L+9353Dvy/NxPrHH+8B+PRdz6iUqkV3hMoknxWTxOl9O5Q/ClAB/x1C6VrG\npz7N3iBVnzhVZheeKtLNtt63W7dFJ4jgcPlrdw3egeBQKoHX8jCK0sbBvT0lOBvi\n/G9yo0cCgYAlLyVyzdKIpUPpecFmnZu/mZD3jxIL6UF02HFmQfMf42uLesSXgR13\nrV3IbUZ32MCSvUfstzPVEG1PtElK+nT37tHvtyoVfhjuruc2pjyvBhvsoypXj6LF\njce8sMhxY1GQzuPBlxDremFasAQRXECAnslyeINCY2linKnpWdgXVQKBgC+G+56l\nBFeea/+KKspWgsmW1TAG6VWICcTYI8n+4SvvDXpi4Q+8timLnxfrpNsGseG9sE1m\nT60H6Fff2cmzqK6haY70swuEE5zmIJ8jqhDmm5PtVb7efdbQOrp89BIVz0szktnE\nN6kN2ZtK4dFH8RvYAXsOUNtf005X8IDSlDdRAoGAKNCVWgV3dFyIcm9Q+d5nDKy2\nPeiY15wUfXKOpXL0HB759uFRg0pm3T4IAxISjrV2k7OxAJ643SKly/bhgCovqWVm\nr1ZUSmhVAX30BAKlgOgQMaZ6k9tl2Q8v+eLDLH/3k5aSPNGZe88OUWbqm6cpoZBD\nUXkE0EWy52OV5yDjrV8=\n-----END PRIVATE KEY-----\n",
+  "client_email": "burlap-service-account@striking-optics-184201.iam.gserviceaccount.com",
+  "client_id": "110864288576517226170",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/burlap-service-account%40striking-optics-184201.iam.gserviceaccount.com"
+}
