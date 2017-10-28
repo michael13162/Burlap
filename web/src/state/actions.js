@@ -19,7 +19,9 @@ export function createCourse(course) {
   return (dispatch) => {
     coursesService.createCourse(course)
     .then(() => {
-      dispatch(getCourses());
+      setTimeout(() => {
+        dispatch(getCourses());
+      }, 1000);
     });
   };
 }
