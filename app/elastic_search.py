@@ -1,7 +1,8 @@
 import requests
 import json
+import traceback
+import sys
 
-# url_base = 'http://elasticsearch-1-1-vm:9200'
 url_base = 'http://localhost:9200'
 
 def create_course(course_name):
@@ -34,14 +35,16 @@ def delete_course(course_id):
     r = requests.delete(url)
     try:
         r.raise_for_status()
-    except:
+    except Exception as e:
+        traceback.print_exc(file=sys.stdout)
         return False
 
     url =  url_base + "/{}/{}/{}".format("u_of_utah", "courses", course_id)
     r = requests.delete(url)
     try:
         r.raise_for_status()
-    except:
+    except Exception as e:
+        traceback.print_exc(file=sys.stdout)
         return False
     return True
 
@@ -68,7 +71,8 @@ def delete_document(course_id, file_id):
     r = requests.delete(url)
     try:
         r.raise_for_status()
-    except:
+    except Exception as e:
+        traceback.print_exc(file=sys.stdout)
         return False
     return True
 
