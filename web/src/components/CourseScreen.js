@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class CourseScreen extends Component {
   render() {
@@ -9,5 +10,9 @@ class CourseScreen extends Component {
     );
   }
 }
+
+CourseScreen.propTypes = {
+  match: PropTypes.object.isRequired,
+};
 
 export default CourseScreen;
