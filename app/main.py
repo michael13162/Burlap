@@ -117,7 +117,7 @@ def courses():
         course_id = request.get_json()['course_id']
         if es.delete_course(course_id):
             return ('', 204)
-        else
+        else:
             return message_response(400, "Deleting course failed", "application/json")
 
 
