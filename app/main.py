@@ -152,46 +152,20 @@ def upload_file(course_id):
                 es.create_document(course_id, file.filename, file_id, text)
                 return message_response(201, "Received png file and uploaded to elasticsearch", "application/json")
 ####################################
-
-            elif file.mimetype == 'video/mp4' or        # .mp4
-                file.mimetype == 'video/quicktime' or   # .mov
-                file.mimetype == 'video/x-flv' or       # .flv
-                file.mimetype == 'video/x-ms-wmv' or    # .wmv
-                file.mimetype == 'video/x-msvideo':     # .avi
+            elif file.mimetype == 'video/mp4' or file.mimetype == 'video/quicktime' or file.mimetype == 'video/x-flv' or file.mimetype == 'video/x-ms-wmv' or file.mimetype == 'video/x-msvideo': # .mp4, .mov, .flv, .wmv, .avi
                     # extract to 16000Hz 16bit mono FLAC audio
                     # pass to speech
-            elif file.mimetype == 'audio/vnd.wav' or    # .wav
-                file.mimetype == 'audio/mpeg' or        # .mp3
-                file.mimetype == 'audio/x-wav':         # .wma
+            elif file.mimetype == 'audio/vnd.wav' or file.mimetype == 'audio/mpeg' or file.mimetype == 'audio/x-wav':         # .wav, .mp3, .wma
                     # convert to 16000Hz 16bit mono FLAC audio
                     # pass to speech
-            elif file.mimetype == 'application/msword' or   # .doc .dot
-                file.mimetype == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' or  # .docx
-                file.mimetype == 'application/vnd.openxmlformats-officedocument.wordprocessingml.template' or  # .dotx
-                file.mimetype == 'application/vnd.ms-word.document.macroEnabled.12' or # .docm
-                file.mimetype == 'application/vnd.ms-word.template.macroEnabled.12':   # .dotm
+            elif file.mimetype == 'application/msword' or file.mimetype == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' or file.mimetype == 'application/vnd.openxmlformats-officedocument.wordprocessingml.template' or file.mimetype == 'application/vnd.ms-word.document.macroEnabled.12' or file.mimetype == 'application/vnd.ms-word.template.macroEnabled.12':   # (.doc .dot) .docx .dotx .docm .dotm
                     # convert to pdf? or just find a text section?
-            elif file.mimetype == 'application/vnd.ms-excel' or   # .xls
-                file.mimetype == 'application/vnd.ms-excel' or # .xlt .xla
-                file.mimetype == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' or    # .xlsx
-                file.mimetype == 'application/vnd.openxmlformats-officedocument.spreadsheetml.template' or # .xltx
-                file.mimetype == 'application/vnd.ms-excel.sheet.macroEnabled.12' or   # .xlsm
-                file.mimetype == 'application/vnd.ms-excel.template.macroEnabled.12' or    # .xltm
-                file.mimetype == 'application/vnd.ms-excel.addin.macroEnabled.12' or   # .xlam
-                file.mimetype == 'application/vnd.ms-excel.sheet.binary.macroEnabled.12':  # .xlsb
+            elif file.mimetype == 'application/vnd.ms-excel' or file.mimetype == 'application/vnd.ms-excel' or file.mimetype == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' or file.mimetype == 'application/vnd.openxmlformats-officedocument.spreadsheetml.template' or file.mimetype == 'application/vnd.ms-excel.sheet.macroEnabled.12' or file.mimetype == 'application/vnd.ms-excel.template.macroEnabled.12' or file.mimetype == 'application/vnd.ms-excel.addin.macroEnabled.12' or file.mimetype == 'application/vnd.ms-excel.sheet.binary.macroEnabled.12':  # .xls (.xlt .xla) .xlsx .xltx .xlsm .xltm .xlam .xlsb
                     # convert to pdf? or something else?
-            elif file.mimetype == 'application/vnd.ms-powerpoint' or  # .ppt .pot .pps .ppa
-                file.mimetype == 'application/vnd.openxmlformats-officedocument.presentationml.presentation' or  # .pptx
-                file.mimetype == 'application/vnd.openxmlformats-officedocument.presentationml.template' or  # .potx
-                file.mimetype == 'application/vnd.openxmlformats-officedocument.presentationml.slideshow' or # .ppsx
-                file.mimetype == 'application/vnd.ms-powerpoint.addin.macroEnabled.12' or    # .ppam
-                file.mimetype == 'application/vnd.ms-powerpoint.presentation.macroEnabled.12' or # .pptm
-                file.mimetype == 'application/vnd.ms-powerpoint.template.macroEnabled.12' or # .potm
-                file.mimetype == 'application/vnd.ms-powerpoint.slideshow.macroEnabled.12':  # .ppsm
+            elif file.mimetype == 'application/vnd.ms-powerpoint' or file.mimetype == 'application/vnd.openxmlformats-officedocument.presentationml.presentation' or file.mimetype == 'application/vnd.openxmlformats-officedocument.presentationml.template' or file.mimetype == 'application/vnd.openxmlformats-officedocument.presentationml.slideshow' or file.mimetype == 'application/vnd.ms-powerpoint.addin.macroEnabled.12' or file.mimetype == 'application/vnd.ms-powerpoint.presentation.macroEnabled.12' or file.mimetype == 'application/vnd.ms-powerpoint.template.macroEnabled.12' or file.mimetype == 'application/vnd.ms-powerpoint.slideshow.macroEnabled.12':  # (.ppt .pot .pps .ppa) .pptx .potx .ppsx .ppam .pptm .potm .ppsm
                     # convert to pdf? or something else?
             elif file.mimetype == 'text/csv':   # .csv
                 # get text
-
 ####################################
             else:
                 return message_response(400, "Uploaded file has an unrecognized mimetype", 'application/json')
@@ -230,7 +204,7 @@ def get_all_files(course_id):
                   })
     return Response(json.dumps(js),  mimetype='application/json')
 
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'bmp', 'mp4'])
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'bmp', 'mp4', 'doc', 'docx'])
 
 def allowed_file(filename):
     return '.' in filename and \
