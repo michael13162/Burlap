@@ -91,6 +91,7 @@ def courses():
                         'course_id' : course[0],
                         'type' : 'course_type'
                       })
+        js.sort(key = lambda x: x["name"])
         return Response(json.dumps(js),  mimetype='application/json')
 
     elif request.method == 'POST':
