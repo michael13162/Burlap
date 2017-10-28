@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { GridList, GridTile } from 'material-ui/GridList';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+
 
 const tilesData = [
   { title: 'Breakfast', author: 'jill111', },
@@ -15,8 +18,10 @@ const tilesData = [
 class CourseListScreen extends Component {
   render() {
     return (
-      <div>
-        <h1>Courses</h1>
+      <div style={styles.screenWrapper}>
+        <h1 style={styles.title}>
+          Courses
+        </h1>
         <div style={styles.listWrapper}>
           <GridList
             cellHeight={180}
@@ -33,23 +38,37 @@ class CourseListScreen extends Component {
             ))}
           </GridList>
         </div>
+        <FloatingActionButton style={styles.fab}>
+          <ContentAdd />
+        </FloatingActionButton>
       </div>
     );
   }
 }
 
 const styles = {
+  screenWrapper: {
+    display: 'relative',
+  },
+  title: {
+    fontSize: '32px',
+  },
   listWrapper: {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
   },
   list: {
-    width: 960,
+    width: '100%',
   },
   tile: {
-    backgroundColor: '#663399',
+    backgroundColor: '#663399', // mui color
   },
+  fab: {
+    position: 'absolute',
+    bottom: 0, // mui spacing
+    left: 0, // mui spacing
+  }
 };
 
 export default CourseListScreen;
