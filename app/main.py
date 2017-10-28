@@ -187,7 +187,7 @@ def search_files(course_id):
     search_string = request.args.get('search', default='', type = str)
     js = []
     file_objects = es.search(course_id, search_string)
-    sorted(file_objects, key = lambda x: -x[2])
+    file_objects = sorted(file_objects, key = lambda x: -x[2])
     for file_object in file_objects:
         js.append({ 'name' : file_object[1],
                     'file_id' : file_object[0],
@@ -199,9 +199,9 @@ def search_files(course_id):
 def get_all_files(course_id):
     js = []
     file_objects = es.get_course_files(course_id)
-    sorted(file_objects, key = lambda x: x[1])
+    file_objects = sorted(file_objects, key = lambda x: x[1])
     for file_object in file_objects:
-        js.append({ 'name' : file_object[1], 
+        js.append({ 'name' : file_object[1],
                     'file_id' : file_object[0],
                     'type' : extract_extension(file_object[1])
                   })
