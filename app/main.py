@@ -209,7 +209,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def extract_extension(filename):
-    return '.' + filename.rsplit('.', 1)[1].lower()
+    return filename.rsplit('.', 1)[1].lower()
 
 def read_txt_file(file_path, file_name):
     return file(os.path.join(file_path, file_name), 'r').read()
