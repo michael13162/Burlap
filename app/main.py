@@ -153,19 +153,25 @@ def upload_file(course_id):
                 return message_response(201, "Received png file and uploaded to elasticsearch", "application/json")
 ####################################
             elif file.mimetype == 'video/mp4' or file.mimetype == 'video/quicktime' or file.mimetype == 'video/x-flv' or file.mimetype == 'video/x-ms-wmv' or file.mimetype == 'video/x-msvideo': # .mp4, .mov, .flv, .wmv, .avi
-                    # extract to 16000Hz 16bit mono FLAC audio
-                    # pass to speech
+                # extract to 16000Hz 16bit mono FLAC audio
+                # pass to speech
+                pass
             elif file.mimetype == 'audio/vnd.wav' or file.mimetype == 'audio/mpeg' or file.mimetype == 'audio/x-wav':         # .wav, .mp3, .wma
-                    # convert to 16000Hz 16bit mono FLAC audio
-                    # pass to speech
+                # convert to 16000Hz 16bit mono FLAC audio
+                # pass to speech
+                pass
             elif file.mimetype == 'application/msword' or file.mimetype == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' or file.mimetype == 'application/vnd.openxmlformats-officedocument.wordprocessingml.template' or file.mimetype == 'application/vnd.ms-word.document.macroEnabled.12' or file.mimetype == 'application/vnd.ms-word.template.macroEnabled.12':   # (.doc .dot) .docx .dotx .docm .dotm
-                    # convert to pdf? or just find a text section?
+                # convert to pdf? or just find a text section?
+                pass
             elif file.mimetype == 'application/vnd.ms-excel' or file.mimetype == 'application/vnd.ms-excel' or file.mimetype == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' or file.mimetype == 'application/vnd.openxmlformats-officedocument.spreadsheetml.template' or file.mimetype == 'application/vnd.ms-excel.sheet.macroEnabled.12' or file.mimetype == 'application/vnd.ms-excel.template.macroEnabled.12' or file.mimetype == 'application/vnd.ms-excel.addin.macroEnabled.12' or file.mimetype == 'application/vnd.ms-excel.sheet.binary.macroEnabled.12':  # .xls (.xlt .xla) .xlsx .xltx .xlsm .xltm .xlam .xlsb
-                    # convert to pdf? or something else?
+                # convert to pdf? or something else?
+                pass
             elif file.mimetype == 'application/vnd.ms-powerpoint' or file.mimetype == 'application/vnd.openxmlformats-officedocument.presentationml.presentation' or file.mimetype == 'application/vnd.openxmlformats-officedocument.presentationml.template' or file.mimetype == 'application/vnd.openxmlformats-officedocument.presentationml.slideshow' or file.mimetype == 'application/vnd.ms-powerpoint.addin.macroEnabled.12' or file.mimetype == 'application/vnd.ms-powerpoint.presentation.macroEnabled.12' or file.mimetype == 'application/vnd.ms-powerpoint.template.macroEnabled.12' or file.mimetype == 'application/vnd.ms-powerpoint.slideshow.macroEnabled.12':  # (.ppt .pot .pps .ppa) .pptx .potx .ppsx .ppam .pptm .potm .ppsm
-                    # convert to pdf? or something else?
+                # convert to pdf? or something else?
+                pass
             elif file.mimetype == 'text/csv':   # .csv
                 # get text
+                pass
 ####################################
             else:
                 return message_response(400, "Uploaded file has an unrecognized mimetype", 'application/json')
