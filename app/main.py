@@ -123,9 +123,7 @@ def courses():
              } ]
         '''
         course_name = request.get_json()['name']
-        # elastic search is broken right now
-        #generated_id = es.create_course(course_name)
-        generated_id = str(uuid.uuid4())
+        generated_id = es.create_course(course_name)
         js = {
                 'name' : course_name,
                 'course_id' : generated_id,
