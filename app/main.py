@@ -186,6 +186,8 @@ def get_file(file_id):
 @app.route('/api/courses/<course_id>/files', methods=['GET'])
 def search_files(course_id):
     search_string = request.args.get('search', default='', type = str)
+    if (search_string == ''):
+        return get_all_files(course_id)
     js = []
     file_objects = es.search(course_id, search_string)
     file_objects = sorted(file_objects, key = lambda x: -x[2])
