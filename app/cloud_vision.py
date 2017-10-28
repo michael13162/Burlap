@@ -26,7 +26,7 @@ def get_doc_text_strings(content):
                     'type': vision.enums.Feature.Type.LABEL_DETECTION,
                     }]
             })
-    document = response.full_text_annotation
+    document = annotations.full_text_annotation
     labels = annotations.label_annotations
    
     myList = []

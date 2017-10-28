@@ -185,9 +185,9 @@ def get_file(file_id):
 def search_files(course_id):
     search_string = request.args.get('search', default='', type = str)
     js = []
-    for file in es.search(course_id, search_string):
-        js.append({ 'name' : course[1], 
-                    'course_id' : course[0],
+    for file_object in es.search(course_id, search_string):
+        js.append({ 'name' : file_object[1], 
+                    'course_id' : file_object[0],
                     'thumbnail' : 'TODO use actual thumbnail'
                   })
     return Response(json.dumps(js),  mimetype='application/json')
@@ -222,7 +222,7 @@ def read_img_file(file_path, file_name):
     return content
 
 def message_response(status_code, message, mime_type):
-    return Response("{'message':" + message + "}", status=status_code, mimetype=mime_type)
+    return Response("{'message':'" + message + "'}", status=status_code, mimetype=mime_type)
 
-app.run(host='0.0.0.0', port=80)
+app.run(host='0.0.0.0', port=80, threaded=True)
 
