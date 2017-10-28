@@ -110,7 +110,7 @@ class CourseScreen extends Component {
             containerElement={
               <a
                 target="_blank"
-                href={`${apiUrl}files/${x.fileId}`}
+                href={`${apiUrl}files/${x.fileId}/${x.name}`}
               />
             }
           />
