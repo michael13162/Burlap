@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { GridList, GridTile } from 'material-ui/GridList';
@@ -6,17 +7,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
 import { getCourses } from '../state/actions';
-
-const tilesData = [
-  { title: 'Breakfast', author: 'jill111', },
-  { title: 'Tasty burger', author: 'pashminu', },
-  { title: 'Camera', author: 'Danson67', },
-  { title: 'Morning', author: 'fancycrave1', },
-  { title: 'Hats', author: 'Hans', },
-  { title: 'Honey', author: 'fancycravel', },
-  { title: 'Vegetables', author: 'jill111', },
-  { title: 'Water plant', author: 'BkrmadtyaKarki', },
-];
+import Course from '../models/Course';
 
 class CourseListScreen extends Component {
   componentDidMount() {
@@ -43,14 +34,13 @@ class CourseListScreen extends Component {
             cols={4}
             style={styles.list}
           >
-            {tilesData.map(x => (
+            {this.props.courses.map(x => (
               <Link
-                to={`/courses/${x.title}`}
-                key={x.title}
+                to={`/courses/${x.courseId}`}
+                key={x.name}
               >
                 <GridTile
-                  title={x.title}
-                  subtitle={x.author}
+                  title={x.name}
                   style={styles.tile}
                 />
               </Link>
@@ -93,8 +83,13 @@ const styles = {
   }
 };
 
+CourseListScreen.propTypes = {
+  courses: PropTypes.arrayOf(Course.propTypes),
+  dispatch: PropTypes.func.isRequired,
+};
+
 const mapStateToProps = (state) => ({
-  blah: state.foo,
+  courses: state.courses,
 });
 
 export default connect(mapStateToProps)(CourseListScreen);

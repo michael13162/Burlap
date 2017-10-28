@@ -1,3 +1,3 @@
 export default {
-  foo: 10,
+  courses: [],
 };

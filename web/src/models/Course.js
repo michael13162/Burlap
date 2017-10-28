@@ -6,9 +6,9 @@ export default {
     courseId: response.course_id,
     thumbnail: response.thumbnail,
   }),
-  propTypes: {
+  propTypes: PropTypes.shape({
     name: PropTypes.string.isRequired,
     courseId: PropTypes.string.isRequired,
     thumbnail: PropTypes.string.isRequired,
-  },
+  }),
 };
