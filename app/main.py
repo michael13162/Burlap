@@ -103,37 +103,40 @@ def courses():
 def upload_file(course_id):
     if request.method == 'POST':
         if 'file' not in request.files:
-            return response(400, "No file chosen", 'application/json')
+            return message_response(400, "No file chosen", 'application/json')
         file = request.files['file']
         if file.filename == '':
-            return response(400, "No file chosen", 'application/json')
+            return message_response(400, "No file chosen", 'application/json')
         if file and allowed_file(file.filename):
             file_id = uuid.uuid4()
             file_path = app.static_folder + '\\files\\' + str(file_id)
             if not os.path.exists(file_path):
                 os.makedirs(file_path)
             file.save(join(file_path, file.filename))
-            print(file)
-            return response(201, "Successfully uploaded file to server", 'application/json')
+            print(file.mimetype)
+            if file.mimetype == 'application/pdf':
+                
+            else:
+                return message_response(400, "Uploaded file has an unrecognized mimetype", 'application/json')
 
 @app.route('/api/files/<file_id>', methods=['GET'])
 def get_file(file_id):
     if request.method == 'GET':
         path = app.static_folder + '\\files\\' + file_id
         if not os.path.exists(file_path):
-            return response(400, "Specified file id does not exist", 'application/json')
+            return message_response(400, "Specified file id does not exist", 'application/json')
         files = [f for f in listdir(path) if isfile(join(path, f))]
         if len(files) == 0:
-            return response(400, "Server does not have a file with specified id", 'application/json')
+            return message_response(400, "Server does not have a file with specified id", 'application/json')
         elif len(files) >= 2:
-            return response(500, "Server has more than one file stored under specified id" , 'application/json')
+            return message_response(500, "Server has more than one file stored under specified id" , 'application/json')
         return send_from_directory(path, filename=files[0])
 
 @app.route('/api/courses/<course_id>/files?search=<search_string>', methods=['GET'])
 def search_files(course_id, search_string):
     print(course_id)
     print(search_string)
-    return response(418, "not implemented" , 'application/json')
+    return message_response(418, "not implemented" , 'application/json')
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg'])
 
@@ -141,6 +144,7 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def response(status_code, message, mime_type):
+def message_response(status_code, message, mime_type):
     return Response("{'message':" + message + "}", status=status_code, mimetype=mime_type)
 
+app.run()
