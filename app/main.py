@@ -15,9 +15,14 @@
 import logging
 import json
 import uuid
+import io
 import os
 import cloud_vision as cv
 import elastic_search as es
+from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
+from pdfminer.converter import TextConverter
+from pdfminer.layout import LAParams
+from pdfminer.pdfpage import PDFPage
 from os import listdir
 from os.path import dirname, isfile, join
 from flask import Flask, abort, render_template, request, Response, send_from_directory, url_for
@@ -119,9 +124,36 @@ def upload_file(course_id):
             if not os.path.exists(file_path):
                 os.makedirs(file_path)
             file.save(join(file_path, file.filename))
-            print(file.mimetype)
-            if file.mimetype == 'application/pdf':
-                
+            if file.mimetype == 'text/plain':
+                text = read_txt_file(file_path, file.filename)
+                es.create_document(course_id, file.filename, file_id, text)
+                return message_response(201, "Received text file and uploaded to elasticsearch", "application/json")
+            elif file.mimetype == 'application/pdf':
+                text = read_pdf_file(file_path, file.filename)
+                es.create_document(course_id, file.filename, file_id, text)
+                return message_response(201, "Received pdf file and uploaded to elasticsearch", "application/json")
+            elif file.mimetype == 'image/png':
+                content = read_img_file(file_path, file.filename)
+                text = ' '.join(cv.get_doc_text_strings(content))
+                es.create_document(course_id, file.filename, file_id, text)
+                return message_response(201, "Received png file and uploaded to elasticsearch", "application/json")
+            elif file.mimetype == 'image/jpg':
+                content = read_img_file(file_path, file.filename)
+                text = ' '.join(cv.get_doc_text_strings(content))
+                print(text)
+                es.create_document(course_id, file.filename, file_id, text)
+                return message_response(201, "Received png file and uploaded to elasticsearch", "application/json")
+            elif file.mimetype == 'image/jpeg':
+                content = read_img_file(file_path, file.filename)
+                text = ' '.join(cv.get_doc_text_strings(content))
+                print(text)
+                es.create_document(course_id, file.filename, file_id, text)
+                return message_response(201, "Received png file and uploaded to elasticsearch", "application/json")
+            elif file.mimetype == 'image/bmp':
+                content = read_img_file(file_path, file.filename)
+                text = ' '.join(cv.get_doc_text_strings(content))
+                es.create_document(course_id, file.filename, file_id, text)
+                return message_response(201, "Received png file and uploaded to elasticsearch", "application/json")
             else:
                 return message_response(400, "Uploaded file has an unrecognized mimetype", 'application/json')
 
@@ -144,11 +176,34 @@ def search_files(course_id, search_string):
     print(search_string)
     return message_response(418, "not implemented" , 'application/json')
 
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg'])
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'bmp', 'mp4'])
 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def read_txt_file(file_path, file_name):
+    return open(file_path + "\\" + file_name, 'r').read()
+
+def read_pdf_file(file_path, file_name):
+    pagenums = set()
+    output = StringIO()
+    manager = PDFResourceManager()
+    converter = TextConverter(manager, output, laparams=LAParams())
+    interpreter = PDFPageInterpreter(manager, converter)
+    infile = open(file_path + "\\" + file_name, 'rb')
+    for page in PDFPage.get_pages(infile, pagenums):
+        interpreter.process_page(page)
+    infile.close()
+    converter.close()
+    text = output.getvalue()
+    output.close
+    return text 
+
+def read_img_file(file_path, file_name):
+    with io.open(file_path + "\\" + file_name, 'rb') as image:
+        content = image.read()
+    return content
 
 def message_response(status_code, message, mime_type):
     return Response("{'message':" + message + "}", status=status_code, mimetype=mime_type)
