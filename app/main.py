@@ -84,6 +84,7 @@ def index():
 @app.route('/api/courses', methods=['GET', 'POST'])
 def courses():
     if request.method == 'GET':
+        '''
         js = [
                { 'name' : 'CS 4400',
                  'course_id' : 'id-1',
@@ -100,7 +101,6 @@ def courses():
                         'course_id' : course[0],
                         'thumbnail' : 'TODO use actual thumbnail'
                       })
-        '''
         return Response(json.dumps(js),  mimetype='application/json')
 
     elif request.method == 'POST':
