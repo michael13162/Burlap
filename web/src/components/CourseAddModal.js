@@ -77,6 +77,7 @@ class CourseAddModal extends Component {
             value={this.state.courseName}
             floatingLabelText="Course name"
             onChange={this.handleChange}
+            autoFocus
           />
         </Dialog>
       </div>
