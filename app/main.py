@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START imports]
 import logging
 import json
 import uuid
@@ -22,25 +21,17 @@ import elastic_search as es
 from os import listdir
 from os.path import dirname, isfile, join
 from flask import Flask, abort, render_template, request, Response, send_from_directory, url_for
-# [END imports]
 
-# [START app]
-
-# [START create_app]
 app = Flask(__name__, static_folder='static')
-# [END create_app]
 
 ###############################################
 # Start of form code (unrelated to application)
 ###############################################
 
-# [START form]
 @app.route('/form')
 def form():
     return render_template('form.html')
-# [END form]
 
-# [START submitted]
 @app.route('/submitted', methods=['POST'])
 def submitted_form():
     name = request.form['name']
@@ -48,22 +39,18 @@ def submitted_form():
     site = request.form['site_url']
     comments = request.form['comments']
 
-    # [END submitted]
-    # [START render_template]
     return render_template(
         'submitted_form.html',
         name=name,
         email=email,
         site=site,
         comments=comments)
-    # [END render_template]
 
 @app.errorhandler(500)
 def server_error(e):
     # Log the error and stacktrace.
     logging.exception('An error occurred during a request.')
     return 'An internal error occurred.', 500
-# [END app]
 
 #############################################
 # End of form code (unrelated to application)
