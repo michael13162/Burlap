@@ -207,7 +207,7 @@ def get_all_files(course_id):
     js = []
     for file_object in es.get_course_files(course_id):
         js.append({ 'name' : file_object[1], 
-                    'course_id' : file_object[0],
+                    'file_id' : file_object[0],
                     'thumbnail' : 'TODO use actual thumbnail'
                   })
     return Response(json.dumps(js),  mimetype='application/json')
