@@ -4,7 +4,7 @@ export default {
   fromApi: (response) => ({
     name: response.name,
     fileId: response.file_id,
-    thumbnail: response.thumbnail,
+    type: response.type,
   }),
   /*
   toApi: (file) => (FileReader stuff here?),
@@ -12,6 +12,6 @@ export default {
   propTypes: PropTypes.shape({
     name: PropTypes.string.isRequired,
     fileId: PropTypes.string.isRequired,
-    thumbnail: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
   }),
 };
