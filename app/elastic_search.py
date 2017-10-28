@@ -100,3 +100,13 @@ def search(course_id, query):
     response_docs = parsed_json["hits"]["hits"]
     return [(doc["_id"], doc["_source"]["file_name"])
             for doc in response_docs]
+
+def get_course_files(course_id):
+    url =  url_base + "/{}/{}/{}".format(course_id, "documents", "_search")
+
+    r = requests.get(url)
+    r.raise_for_status()
+    parsed_json = json.loads(r.text)
+    response_docs = parsed_json["hits"]["hits"]
+    return [(doc["_id"], doc["_source"]["file_name"])
+            for doc in response_docs]
