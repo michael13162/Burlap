@@ -81,18 +81,6 @@ def index():
     </form>
     '''
 
-@app.route('/postcourse')
-def index2():
-    return '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form method=post action="/api/courses" enctype=multipart/form-data>
-      <p><input type=text name=name>
-         <input type=submit value=Create>
-    </form>
-    '''
-
 @app.route('/api/courses', methods=['GET', 'POST', 'DELETE'])
 def courses():
     if request.method == 'GET':
