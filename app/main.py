@@ -170,8 +170,8 @@ def upload_file(course_id):
         else:
             return message_response(400, "Uploaded file does not have a supported extension", 'application/json')
 
-@app.route('/api/files/<file_id>', methods=['GET'])
-def get_file(file_id):
+@app.route('/api/files/<file_id>/<file_name>', methods=['GET'])
+def get_file(file_id, file_name):
     if request.method == 'GET':
         path = os.path.join(app.static_folder, "files", str(file_id))
         if not os.path.exists(path):
