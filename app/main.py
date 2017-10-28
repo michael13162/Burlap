@@ -87,7 +87,7 @@ def courses():
     if request.method == 'GET':
         js = []
         for course in es.get_courses():
-            js.append({ 'name' : course[1], 
+            js.append({ 'name' : course[1],
                         'course_id' : course[0],
                         'type' : 'course_type'
                       })
@@ -157,9 +157,10 @@ def upload_file(course_id):
                 images_path = os.path.join(file_path, "images")
                 if os.path.exists(images_path):
                     files = [f for f in listdir(images_path) if isfile(join(images_path, f))]
-                    image_bytes = read_img_file(images_path, files[0])
-                    text += ' '
-                    text += ' '.join(cv.get_doc_text_strings(image_bytes))
+                    for f in files:
+                        image_bytes = read_img_file(images_path, f)
+                        text += ' '
+                        text += ' '.join(cv.get_doc_text_strings(image_bytes))
                 es.create_document(course_id, file.filename, file_id, text)
                 return message_response(201, "Received docx file and uploaded to elasticsearch", "application/json")
                 pass
@@ -188,7 +189,7 @@ def search_files(course_id):
     file_objects = es.search(course_id, search_string)
     sorted(file_objects, key = lambda x: -x[2])
     for file_object in file_objects:
-        js.append({ 'name' : file_object[1], 
+        js.append({ 'name' : file_object[1],
                     'file_id' : file_object[0],
                     'type' : extract_extension(file_object[1])
                   })
@@ -198,7 +199,7 @@ def search_files(course_id):
 def get_all_files(course_id):
     js = []
     for file_object in es.get_course_files(course_id):
-        js.append({ 'name' : file_object[1], 
+        js.append({ 'name' : file_object[1],
                     'file_id' : file_object[0],
                     'type' : extract_extension(file_object[1])
                   })
