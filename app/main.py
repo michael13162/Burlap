@@ -137,9 +137,13 @@ def get_file(file_id):
 
 @app.route('/api/courses/<course_id>/files?search=<search_string>', methods=['GET'])
 def search_files(course_id, search_string):
-    print(course_id)
-    print(search_string)
-    return response(418, "not implemented" , 'application/json')
+    js = []
+    for file in es.search(course_id, search_string):
+        js.append({ 'name' : course[1], 
+                    'course_id' : course[0],
+                    'thumbnail' : 'TODO use actual thumbnail'
+                  })
+    return Response(json.dumps(js),  mimetype='application/json')
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg'])
 
