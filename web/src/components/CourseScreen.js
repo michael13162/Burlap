@@ -4,11 +4,14 @@ import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
 import axios from 'axios';
 import { List, ListItem } from 'material-ui/List';
+import FileDownload from 'material-ui/svg-icons/file/file-download';
+import IconButton from 'material-ui/IconButton';
 
 import Course from '../models/Course';
 import { spacing, titleSize, listMaxWidth, listBorder, borderGrey } from '../styles/constants';
 import { getCourses } from '../state/actions';
 import { getFilesForCourse } from '../services/filesService';
+import { apiUrl } from '../config';
 
 class CourseScreen extends Component {
   state = {
@@ -34,6 +37,14 @@ class CourseScreen extends Component {
     axios.post(`courses/${this.props.match.params.courseId}/files`, formData);
   }
 
+  renderDownloadButton = (fileId, name) => {
+    return (
+      <IconButton>
+        <FileDownload />
+      </IconButton>
+    );
+  }
+
   renderFiles = () => {
     const { files } = this.state;
     if (files === null) {
@@ -50,6 +61,13 @@ class CourseScreen extends Component {
           <ListItem
             key={x.fileId}
             primaryText={x.name}
+            rightIconButton={this.renderDownloadButton(x.fileId, x.name)}
+            containerElement={
+              <a
+                target="_blank"
+                href={`${apiUrl}files/${x.fileId}`}
+              />
+            }
           />
         ))}
       </List>
