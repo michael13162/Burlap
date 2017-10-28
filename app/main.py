@@ -181,8 +181,9 @@ def get_file(file_id):
             return message_response(500, "Server has more than one file stored under specified id" , 'application/json')
         return send_from_directory(path, filename=files[0])
 
-@app.route('/api/courses/<course_id>/files?search=<search_string>', methods=['GET'])
-def search_files(course_id, search_string):
+@app.route('/api/courses/<course_id>/files', methods=['GET'])
+def search_files(course_id):
+    search_string = request.args.get('search', default='', type = str)
     js = []
     for file in es.search(course_id, search_string):
         js.append({ 'name' : course[1], 
