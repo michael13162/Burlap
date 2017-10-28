@@ -20,6 +20,7 @@ import io
 import os
 import cloud_vision as cv
 import elastic_search as es
+import docx2txt
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
@@ -160,8 +161,16 @@ def upload_file(course_id):
                 # convert to 16000Hz 16bit mono FLAC audio
                 # pass to speech
                 pass
-            elif file.mimetype == 'application/msword' or file.mimetype == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' or file.mimetype == 'application/vnd.openxmlformats-officedocument.wordprocessingml.template' or file.mimetype == 'application/vnd.ms-word.document.macroEnabled.12' or file.mimetype == 'application/vnd.ms-word.template.macroEnabled.12':   # (.doc .dot) .docx .dotx .docm .dotm
-                # convert to pdf? or just find a text section?
+            elif file.mimetype == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                text = read_docx_file(file_path, file.filename)
+                images_path = os.path.join(file_path, "images")
+                if os.path.exists(images_path):
+                    files = [f for f in listdir(images_path) if isfile(join(images_path, f))]
+                    image_bytes = read_img_file(images_path, files[0])
+                    text += ' '
+                    text += ' '.join(cv.get_doc_text_strings(image_bytes))
+                es.create_document(course_id, file.filename, file_id, text)
+                return message_response(201, "Received docx file and uploaded to elasticsearch", "application/json")
                 pass
             elif file.mimetype == 'application/vnd.ms-excel' or file.mimetype == 'application/vnd.ms-excel' or file.mimetype == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' or file.mimetype == 'application/vnd.openxmlformats-officedocument.spreadsheetml.template' or file.mimetype == 'application/vnd.ms-excel.sheet.macroEnabled.12' or file.mimetype == 'application/vnd.ms-excel.template.macroEnabled.12' or file.mimetype == 'application/vnd.ms-excel.addin.macroEnabled.12' or file.mimetype == 'application/vnd.ms-excel.sheet.binary.macroEnabled.12':  # .xls (.xlt .xla) .xlsx .xltx .xlsm .xltm .xlam .xlsb
                 # convert to pdf? or something else?
@@ -212,7 +221,7 @@ def get_all_files(course_id):
                   })
     return Response(json.dumps(js),  mimetype='application/json')
 
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'bmp', 'mp4', 'doc', 'docx'])
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'bmp', 'mp4', 'docx'])
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -240,6 +249,10 @@ def read_img_file(file_path, file_name):
     with io.open(os.path.join(file_path, file_name), 'rb') as image:
         content = image.read()
     return content
+
+def read_docx_file(file_path, file_name):\
+    text = docx2txt.process(os.path.join(file_path, file_name), os.path.join(file_path, "images"))
+    return text
 
 def message_response(status_code, message, mime_type):
     return Response("{'message':'" + message + "'}", status=status_code, mimetype=mime_type)
