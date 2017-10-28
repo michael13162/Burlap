@@ -222,4 +222,3 @@ def read_img_file(file_path, file_name):
 def message_response(status_code, message, mime_type):
     return Response("{'message':" + message + "}", status=status_code, mimetype=mime_type)
 
-app.run()
