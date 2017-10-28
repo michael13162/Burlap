@@ -1,7 +1,8 @@
 import requests
 import json
 
-url_base = 'http://elasticsearch-1-1-vm:9200'
+# url_base = 'http://elasticsearch-1-1-vm:9200'
+url_base = 'http://localhost:9200'
 
 def create_course(course_name):
     data = {
@@ -71,3 +72,10 @@ def search(course_id, query):
     headers = {"Content-Type" : "application/json"}
     r = requests.get(url, headers=headers, data=json_data)
     r.raise_for_status()
+    parsed_json = json.loads(r.text)
+    response_docs = parsed_json["hits"]["hits"]
+    return [(course["_id"], course["_source"]["course_name"])
+            for course in response_docs]
+
+create_document("test_course", "test_file", "test_file_id", "test text")
+print search("test_course", "test")
