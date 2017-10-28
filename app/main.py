@@ -251,7 +251,10 @@ def read_img_file(file_path, file_name):
     return content
 
 def read_docx_file(file_path, file_name):
-    text = docx2txt.process(os.path.join(file_path, file_name), os.path.join(file_path, "images"))
+    images_path = os.path.join(file_path, "images")
+    if not os.path.exists(images_path):
+        os.makedirs(images_path)
+    text = docx2txt.process(os.path.join(file_path, file_name), images_path)
     return text
 
 def message_response(status_code, message, mime_type):
