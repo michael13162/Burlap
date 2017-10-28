@@ -32,11 +32,18 @@ def get_courses():
 def delete_course(course_id):
     url =  url_base + "/{}".format(course_id)
     r = requests.delete(url)
-    r.raise_for_status()
+    try:
+        r.raise_for_status()
+    except:
+        return False
 
     url =  url_base + "/{}/{}/{}".format("u_of_utah", "courses", course_id)
     r = requests.delete(url)
-    r.raise_for_status()
+    try:
+        r.raise_for_status()
+    except:
+        return False
+    return True
 
 def create_document(course_id, file_name, file_id, text):
     data = {
@@ -49,13 +56,21 @@ def create_document(course_id, file_name, file_id, text):
 
     headers = {"Content-Type" : "application/json"}
     r = requests.put(url, headers=headers, data=json_data)
-    r.raise_for_status()
+    try:
+        r.raise_for_status()
+    except:
+        return False
+    return True
 
 def delete_document(course_id, file_id):
     url =  url_base + "/{}/{}/{}".format(course_id, "documents", file_id)
 
     r = requests.delete(url)
-    r.raise_for_status()
+    try:
+        r.raise_for_status()
+    except:
+        return False
+    return True
 
 def search(course_id, query):
     query = {
@@ -76,4 +91,3 @@ def search(course_id, query):
     response_docs = parsed_json["hits"]["hits"]
     return [(course["_id"], course["_source"]["course_name"])
             for course in response_docs]
-
