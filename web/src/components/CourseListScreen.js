@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { GridList, GridTile } from 'material-ui/GridList';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -29,12 +30,16 @@ class CourseListScreen extends Component {
             style={styles.list}
           >
             {tilesData.map(x => (
-              <GridTile
+              <Link
+                to={`/courses/${x.title}`}
                 key={x.title}
-                title={x.title}
-                subtitle={x.author}
-                style={styles.tile}
-              />
+              >
+                <GridTile
+                  title={x.title}
+                  subtitle={x.author}
+                  style={styles.tile}
+                />
+              </Link>
             ))}
           </GridList>
         </div>
