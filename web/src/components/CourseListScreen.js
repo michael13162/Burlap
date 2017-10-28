@@ -5,6 +5,7 @@ import { GridList, GridTile } from 'material-ui/GridList';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
+import { getCourses } from '../state/actions';
 
 const tilesData = [
   { title: 'Breakfast', author: 'jill111', },
@@ -18,6 +19,10 @@ const tilesData = [
 ];
 
 class CourseListScreen extends Component {
+  componentDidMount() {
+    this.props.dispatch(getCourses());
+  }
+
   handleClick = () => {
     this.props.dispatch((dispatch) => {
       dispatch({

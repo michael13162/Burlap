@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { BrowserRouter } from 'react-router-dom';
 
+import './services/startup';
 import './styles/appStyler';
-import Routes from './Routes';
+import Routes from './components/Routes';
 import Header from './components/Header';
 import { Provider } from 'react-redux';
 import store from './state';
