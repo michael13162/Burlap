@@ -93,5 +93,5 @@ def search(course_id, query):
     r.raise_for_status()
     parsed_json = json.loads(r.text)
     response_docs = parsed_json["hits"]["hits"]
-    return [(course["_id"], course["_source"]["course_name"])
+    return [(course["_id"], course["_source"]["file_name"])
             for course in response_docs]
