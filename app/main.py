@@ -93,20 +93,9 @@ def index2():
     </form>
     '''
 
-@app.route('/api/courses', methods=['GET', 'POST'])
+@app.route('/api/courses', methods=['GET', 'POST', 'DELETE'])
 def courses():
     if request.method == 'GET':
-        '''
-        js = [
-               { 'name' : 'CS 4400',
-                 'course_id' : 'id-1',
-                 'thumbnail' : 'get_test_thumbnail'},
-               { 'name' : 'CS 4530',
-                 'course_id' : 'id-2',
-                 'thumbnail' : 'get_test_thumbnail'
-               }
-             ]
-        '''
         js = []
         for course in es.get_courses():
             js.append({ 'name' : course[1], 
@@ -116,12 +105,6 @@ def courses():
         return Response(json.dumps(js),  mimetype='application/json')
 
     elif request.method == 'POST':
-        '''
-        js = [ { 'name' : 'post_test_name',
-                 'course_id' : 'post_test_course_id', 
-                 'thumbnail' : 'post_test_thumbnail'
-             } ]
-        '''
         course_name = request.get_json()['name']
         generated_id = es.create_course(course_name)
         js = {
@@ -130,6 +113,13 @@ def courses():
                 'thumbnail' : 'TODO use actual thumbnail'
              }
         return Response(json.dumps(js),  mimetype='application/json')
+    elif request.method == 'DELETE':
+        course_id = request.get_json()['course_id']
+        if es.delete_course(course_id):
+            return ('', 204)
+        else:
+            return message_response(400, "Deleting course failed", "application/json")
+
 
 @app.route('/api/courses/<course_id>/files', methods=['POST'])
 def upload_file(course_id):
