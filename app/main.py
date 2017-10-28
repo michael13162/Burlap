@@ -14,11 +14,12 @@
 
 # [START app]
 import logging
+import json
 from os import listdir
 from os.path import isfile, join
 
 # [START imports]
-from flask import Flask, abort, render_template, request, send_from_directory
+from flask import Flask, abort, render_template, request, send_from_directory, Response
 # [END imports]
 
 # [START create_app]
@@ -67,11 +68,22 @@ def server_error(e):
 @app.route('/api/courses', methods=['GET', 'POST'])
 def courses():
     if request.method == 'GET':
-        return abort(418)
+        js = [
+               { 'name' : 'get_test_name',
+                 'course_id' : 'get_test_course_id', 
+                 'thumbnail' : 'get_test_thumbnail'},
+               { 'name' : 'get_test_name',
+                 'course_id' : 'get_test_course_id', 
+                 'thumbnail' : 'get_test_thumbnail'
+               }
+             ]
+        return Response(json.dumps(js),  mimetype='application/json')
     elif request.method == 'POST':
-        return abort(418)
-    else:
-        return abort(418)
+        js = [ { 'name' : 'post_test_name',
+                 'course_id' : 'post_test_course_id', 
+                 'thumbnail' : 'post_test_thumbnail'
+             } ]
+        return Response(json.dumps(js),  mimetype='application/json')
 
 @app.route('/api/courses/<course_id>/files', methods=['POST'])
 def upload_file(course_id):
