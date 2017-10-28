@@ -5,12 +5,14 @@ import Dropzone from 'react-dropzone';
 import { List, ListItem } from 'material-ui/List';
 import FileDownload from 'material-ui/svg-icons/file/file-download';
 import IconButton from 'material-ui/IconButton';
+import TextField from 'material-ui/TextField';
 
 import Course from '../models/Course';
 import { spacing, titleSize, listMaxWidth, listBorder, borderGrey } from '../styles/constants';
 import { getCourses } from '../state/actions';
 import { getFilesForCourse, uploadFiles } from '../services/filesService';
 import { apiUrl } from '../config';
+import { debounce } from 'lodash';
 
 class CourseScreen extends Component {
   state = {
@@ -25,13 +27,26 @@ class CourseScreen extends Component {
   }
 
   loadFiles = () => {
-    getFilesForCourse(this.props.match.params.courseId)
+    getFilesForCourse(this.props.match.params.courseId, this.state.fileSearch)
     .then(x => {
       this.setState({
         files: x,
       });
     });
   }
+
+  doSearch = debounce(() => {
+    this.loadFiles();
+  }, 100, {
+    leading: false,
+    trailing: true,
+  });
+
+  handleChange = (e) => {
+    this.setState({
+      fileSearch: e.target.value,
+    }, this.doSearch);
+  };
 
   handleDrop = (files) => {
     uploadFiles(files, this.props.match.params.courseId)
@@ -52,10 +67,10 @@ class CourseScreen extends Component {
 
   renderFiles = () => {
     const { files } = this.state;
-    if (files === null) {
+    if (files === null || files.length === 0) {
       return (
         <p style={styles.noFiles}>
-          No files.
+          No files. Upload some!
         </p>
       );
     }
@@ -79,6 +94,17 @@ class CourseScreen extends Component {
     );
   }
 
+  renderSearch = () => {
+    return (
+      <TextField
+        value={this.state.fileSearch}
+        floatingLabelText="Search files"
+        onChange={this.handleChange}
+        style={styles.search}
+      />
+    );
+  }
+
   render() {
     if (this.props.course === undefined) {
       return null;
@@ -92,6 +118,7 @@ class CourseScreen extends Component {
           {name}
         </h1>
         <div style={styles.bodyWrapper}>
+          {this.renderSearch()}
           {this.renderFiles()}
           <Dropzone
             onDropAccepted={this.handleDrop}
@@ -133,6 +160,9 @@ const styles = {
     border: `3px dashed ${borderGrey}`,
   },
   noFiles: {
+    marginBottom: spacing,
+  },
+  search: {
     marginBottom: spacing,
   },
 };

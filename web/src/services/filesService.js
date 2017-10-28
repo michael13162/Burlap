@@ -1,9 +1,11 @@
 import axios from 'axios';
 import File from '../models/File';
 
-export function getFilesForCourse(courseId) {
+export function getFilesForCourse(courseId, query) {
   return new Promise((resolve, reject) => {
-    axios.get(`courses/${courseId}`)
+    const request = query ? axios.get(`courses/${courseId}/files?search=${query}`) : axios.get(`courses/${courseId}`);
+
+    request
     .then(response => {
       resolve(response.data.map(x => File.fromApi(x)));
     })
