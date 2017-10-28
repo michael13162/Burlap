@@ -103,7 +103,7 @@ def upload_file(course_id):
             return response(201, "Successfully uploaded file to server", 'application/json')
 
 @app.route('/api/files/<file_id>', methods=['GET'])
-def get_files(file_id):
+def get_file(file_id):
     if request.method == 'GET':
         path = app.static_folder + '\\files\\' + file_id
         if not os.path.exists(file_path):
