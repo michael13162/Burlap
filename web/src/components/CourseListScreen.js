@@ -3,31 +3,21 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { GridList, GridTile } from 'material-ui/GridList';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
 
 import { getCourses } from '../state/actions';
 import Course from '../models/Course';
-import { spacing } from '../styles/constants';
+import CourseAddModal from './CourseAddModal';
 
 class CourseListScreen extends Component {
   componentDidMount() {
     this.props.dispatch(getCourses());
   }
 
-  handleClick = () => {
-    this.props.dispatch((dispatch) => {
-      dispatch({
-        type: 'increment',
-      });
-    });
-  }
-
   render() {
     return (
       <div style={styles.screenWrapper}>
         <h1 style={styles.title}>
-          Courses {this.props.blah}
+          Courses
         </h1>
         <div style={styles.listWrapper}>
           <GridList
@@ -48,12 +38,7 @@ class CourseListScreen extends Component {
             ))}
           </GridList>
         </div>
-        <FloatingActionButton
-          style={styles.fab}
-          onClick={this.handleClick}
-        >
-          <ContentAdd />
-        </FloatingActionButton>
+        <CourseAddModal />
       </div>
     );
   }
@@ -77,11 +62,6 @@ const styles = {
   tile: {
     backgroundColor: '#663399',
   },
-  fab: {
-    position: 'fixed',
-    bottom: spacing,
-    left: spacing,
-  }
 };
 
 CourseListScreen.propTypes = {
