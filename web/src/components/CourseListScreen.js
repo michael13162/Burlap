@@ -8,6 +8,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 
 import { getCourses } from '../state/actions';
 import Course from '../models/Course';
+import { spacing } from '../styles/constants';
 
 class CourseListScreen extends Component {
   componentDidMount() {
@@ -74,12 +75,12 @@ const styles = {
     width: '100%',
   },
   tile: {
-    backgroundColor: '#663399', // mui color
+    backgroundColor: '#663399',
   },
   fab: {
-    position: 'absolute',
-    bottom: 0, // mui spacing
-    left: 0, // mui spacing
+    position: 'fixed',
+    bottom: spacing,
+    left: spacing,
   }
 };
 
