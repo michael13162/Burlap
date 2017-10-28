@@ -89,7 +89,7 @@ def courses():
         for course in es.get_courses():
             js.append({ 'name' : course[1], 
                         'course_id' : course[0],
-                        'thumbnail' : 'TODO use actual thumbnail'
+                        'type' : extract_extension(course[1])
                       })
         return Response(json.dumps(js),  mimetype='application/json')
 
@@ -99,7 +99,7 @@ def courses():
         js = {
                 'name' : course_name,
                 'course_id' : generated_id,
-                'thumbnail' : 'TODO use actual thumbnail'
+                'type' : extract_extension(course_name)
              }
         return Response(json.dumps(js),  mimetype='application/json')
     elif request.method == 'DELETE':
@@ -188,7 +188,7 @@ def search_files(course_id):
     for file_object in es.search(course_id, search_string):
         js.append({ 'name' : file_object[1], 
                     'course_id' : file_object[0],
-                    'thumbnail' : 'TODO use actual thumbnail'
+                    'type' : extract_extension(file_object[1])
                   })
     return Response(json.dumps(js),  mimetype='application/json')
 
@@ -198,7 +198,7 @@ def get_all_files(course_id):
     for file_object in es.get_course_files(course_id):
         js.append({ 'name' : file_object[1], 
                     'file_id' : file_object[0],
-                    'thumbnail' : 'TODO use actual thumbnail'
+                    'type' : extract_extension(file_object[1])
                   })
     return Response(json.dumps(js),  mimetype='application/json')
 
@@ -207,6 +207,9 @@ ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'bmp', 'mp4', 'doc
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def extract_extension(filename):
+    return '.' + filename.rsplit('.', 1)[1].lower()
 
 def read_txt_file(file_path, file_name):
     return file(os.path.join(file_path, file_name), 'r').read()
