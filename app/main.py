@@ -198,8 +198,10 @@ def search_files(course_id):
 @app.route('/api/courses/<course_id>', methods=['GET'])
 def get_all_files(course_id):
     js = []
-    for file_object in es.get_course_files(course_id):
-        js.append({ 'name' : file_object[1],
+    file_objects = es.get_course_files(course_id)
+    sorted(file_objects, key = lambda x: x[1])
+    for file_object in file_objects:
+        js.append({ 'name' : file_object[1], 
                     'file_id' : file_object[0],
                     'type' : extract_extension(file_object[1])
                   })
