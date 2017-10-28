@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { GridList, GridTile } from 'material-ui/GridList';
 import { List, ListItem } from 'material-ui/List';
 
 import { getCourses } from '../state/actions';
 import Course from '../models/Course';
 import CourseAddModal from './CourseAddModal';
-import { spacing, borderGrey } from '../styles/constants';
+import { spacing, listMaxWidth, listBorder, titleSize } from '../styles/constants';
 
 class CourseListScreen extends Component {
   componentDidMount() {
@@ -41,12 +40,12 @@ const styles = {
     display: 'relative',
   },
   title: {
-    fontSize: '32px',
+    fontSize: titleSize,
     padding: spacing,
   },
   list: {
-    maxWidth: '350px',
-    border: `1px solid ${borderGrey}`,
+    maxWidth: listMaxWidth,
+    border: listBorder,
     marginLeft: spacing,
   },
   tile: {
