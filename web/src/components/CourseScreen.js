@@ -6,8 +6,6 @@ import { List, ListItem } from 'material-ui/List';
 import FileDownload from 'material-ui/svg-icons/file/file-download';
 import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
-import FileFolder from 'material-ui/svg-icons/file/folder';
-
 import Doc from 'material-ui/svg-icons/action/description';
 import Image from 'material-ui/svg-icons/image/image';
 import Pdf from 'material-ui/svg-icons/image/picture-as-pdf';
