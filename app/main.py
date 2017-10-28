@@ -18,6 +18,7 @@ import json
 import uuid
 import os
 import cloud_vision as cv
+import elastic_search as es
 from os import listdir
 from os.path import dirname, isfile, join
 from flask import Flask, abort, render_template, request, Response, send_from_directory, url_for
@@ -83,6 +84,7 @@ def index():
 @app.route('/api/courses', methods=['GET', 'POST'])
 def courses():
     if request.method == 'GET':
+        '''
         js = [
                { 'name' : 'get_test_name',
                  'course_id' : 'get_test_course_id', 
@@ -92,12 +94,28 @@ def courses():
                  'thumbnail' : 'get_test_thumbnail'
                }
              ]
+        '''
+        js = []
+        for course in es.get_courses():
+            js.append({ 'name' : course[1], 
+                        'course_id' : course[0],
+                        'thumbnail' : 'TODO use actual thumbnail'
+                      })
         return Response(json.dumps(js),  mimetype='application/json')
+
     elif request.method == 'POST':
+        '''
         js = [ { 'name' : 'post_test_name',
                  'course_id' : 'post_test_course_id', 
                  'thumbnail' : 'post_test_thumbnail'
              } ]
+        '''
+        generated_id = es.create_course(request.data)
+        js = {
+                'name' : request.data,
+                'course_id' : generated_id,
+                'thumbnail' : 'TODO use actual thumbnail'
+             }
         return Response(json.dumps(js),  mimetype='application/json')
 
 @app.route('/api/courses/<course_id>/files', methods=['POST'])
