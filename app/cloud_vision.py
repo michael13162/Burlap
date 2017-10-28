@@ -1,6 +1,8 @@
 from google.cloud import vision
 from google.cloud.vision import types
 from google.oauth2 import service_account
+from google.cloud.vision.feature import Feature
+from google.cloud.vision.feature import FeatureTypes
 
 def get_doc_text_strings(content):
     # Using the service account file in THIS directory,
