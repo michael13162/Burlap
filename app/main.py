@@ -250,7 +250,7 @@ def read_img_file(file_path, file_name):
         content = image.read()
     return content
 
-def read_docx_file(file_path, file_name):\
+def read_docx_file(file_path, file_name):
     text = docx2txt.process(os.path.join(file_path, file_name), os.path.join(file_path, "images"))
     return text
 
