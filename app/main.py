@@ -17,6 +17,7 @@ import logging
 import json
 import uuid
 import os
+import cloud_vision as cv
 from os import listdir
 from os.path import dirname, isfile, join
 from flask import Flask, abort, render_template, request, Response, send_from_directory, url_for
