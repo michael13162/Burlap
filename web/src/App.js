@@ -5,18 +5,22 @@ import { BrowserRouter } from 'react-router-dom';
 import './styles/appStyler';
 import Routes from './Routes';
 import Header from './components/Header';
+import { Provider } from 'react-redux';
+import store from './state';
 
 class App extends Component {
   render() {
     return (
-      <BrowserRouter>
-        <MuiThemeProvider>
-          <div>
-            <Header />
-            <Routes />
-          </div>
-        </MuiThemeProvider>
-      </BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter>
+          <MuiThemeProvider>
+            <div>
+              <Header />
+              <Routes />
+            </div>
+          </MuiThemeProvider>
+        </BrowserRouter>
+      </Provider>
     );
   }
 }

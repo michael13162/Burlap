@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { GridList, GridTile } from 'material-ui/GridList';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -17,11 +18,19 @@ const tilesData = [
 ];
 
 class CourseListScreen extends Component {
+  handleClick = () => {
+    this.props.dispatch((dispatch) => {
+      dispatch({
+        type: 'increment',
+      });
+    });
+  }
+
   render() {
     return (
       <div style={styles.screenWrapper}>
         <h1 style={styles.title}>
-          Courses
+          Courses {this.props.blah}
         </h1>
         <div style={styles.listWrapper}>
           <GridList
@@ -43,7 +52,10 @@ class CourseListScreen extends Component {
             ))}
           </GridList>
         </div>
-        <FloatingActionButton style={styles.fab}>
+        <FloatingActionButton
+          style={styles.fab}
+          onClick={this.handleClick}
+        >
           <ContentAdd />
         </FloatingActionButton>
       </div>
@@ -76,4 +88,8 @@ const styles = {
   }
 };
 
-export default CourseListScreen;
+const mapStateToProps = (state) => ({
+  blah: state.foo,
+});
+
+export default connect(mapStateToProps)(CourseListScreen);
