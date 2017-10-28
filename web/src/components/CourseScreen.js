@@ -4,14 +4,30 @@ import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
 import axios from 'axios';
 import { List, ListItem } from 'material-ui/List';
+import FileDownload from 'material-ui/svg-icons/file/file-download';
+import IconButton from 'material-ui/IconButton';
 
 import Course from '../models/Course';
 import { spacing, titleSize, listMaxWidth, listBorder, borderGrey } from '../styles/constants';
 import { getCourses } from '../state/actions';
+import { getFilesForCourse } from '../services/filesService';
+import { apiUrl } from '../config';
 
 class CourseScreen extends Component {
+  state = {
+    fileSearch: '',
+    files: null,
+  };
+
   componentDidMount() {
     this.props.dispatch(getCourses());
+
+    getFilesForCourse(this.props.match.params.courseId)
+    .then(x => {
+      this.setState({
+        files: x,
+      });
+    });
   }
 
   handleDrop = (files) => {
@@ -19,6 +35,43 @@ class CourseScreen extends Component {
     formData.append('file', files[0]);
 
     axios.post(`courses/${this.props.match.params.courseId}/files`, formData);
+  }
+
+  renderDownloadButton = (fileId, name) => {
+    return (
+      <IconButton>
+        <FileDownload />
+      </IconButton>
+    );
+  }
+
+  renderFiles = () => {
+    const { files } = this.state;
+    if (files === null) {
+      return (
+        <p style={styles.noFiles}>
+          No files.
+        </p>
+      );
+    }
+
+    return (
+      <List style={styles.list}>
+        {files.map(x => (
+          <ListItem
+            key={x.fileId}
+            primaryText={x.name}
+            rightIconButton={this.renderDownloadButton(x.fileId, x.name)}
+            containerElement={
+              <a
+                target="_blank"
+                href={`${apiUrl}files/${x.fileId}`}
+              />
+            }
+          />
+        ))}
+      </List>
+    );
   }
 
   render() {
@@ -34,19 +87,12 @@ class CourseScreen extends Component {
           {name}
         </h1>
         <div style={styles.bodyWrapper}>
-          <List style={styles.list}>
-            {[1, 2, 3].map(x => (
-              <ListItem
-                key={x}
-                primaryText={x}
-              />
-            ))}
-          </List>
+          {this.renderFiles()}
           <Dropzone
             onDropAccepted={this.handleDrop}
             style={styles.dropzone}
           >
-            <p>Drag and drop files here.</p>
+            <p>Drag and drop files to upload.</p>
           </Dropzone>
         </div>
       </div>
@@ -80,7 +126,10 @@ const styles = {
     height: '96px',
     marginBottom: spacing,
     border: `3px dashed ${borderGrey}`,
-  }
+  },
+  noFiles: {
+    marginBottom: spacing,
+  },
 };
 
 const mapStateToProps = (state, props) => ({
