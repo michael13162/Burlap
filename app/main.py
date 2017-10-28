@@ -185,12 +185,13 @@ def get_file(file_id):
 def search_files(course_id):
     search_string = request.args.get('search', default='', type = str)
     js = []
-    for file_object in es.search(course_id, search_string):
+    file_objects = es.search(course_id, search_string)
+    sorted(file_objects, key = lambda x: -x[2])
+    for file_object in file_objects:
         js.append({ 'name' : file_object[1], 
                     'file_id' : file_object[0],
                     'type' : extract_extension(file_object[1])
                   })
-    sorted(js, key = lambda x: -x[2])
     return Response(json.dumps(js),  mimetype='application/json')
 
 @app.route('/api/courses/<course_id>', methods=['GET'])
