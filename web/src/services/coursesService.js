@@ -10,3 +10,11 @@ export function getCourses() {
     .catch(reject);
   });
 }
+
+export function createCourse(course) {
+  return new Promise((resolve, reject) => {
+    axios.post('courses', Course.toApi(course))
+    .then(resolve)
+    .catch(reject);
+  });
+}

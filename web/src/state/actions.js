@@ -14,3 +14,12 @@ export function getCourses() {
     });
   };
 }
+
+export function createCourse(course) {
+  return (dispatch) => {
+    coursesService.createCourse(course)
+    .then(() => {
+      dispatch(getCourses());
+    });
+  };
+}

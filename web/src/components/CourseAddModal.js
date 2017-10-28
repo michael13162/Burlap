@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -6,6 +7,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import TextField from 'material-ui/TextField';
 
 import { spacing } from '../styles/constants';
+import { createCourse } from '../state/actions';
 
 class CourseAddModal extends Component {
   state = {
@@ -33,6 +35,14 @@ class CourseAddModal extends Component {
     });
   }
 
+  handleSubmit = () => {
+    this.props.dispatch(createCourse({
+      name: this.state.courseName,
+    }));
+
+    this.setState({ open: false });
+  };
+
   render() {
     const actions = [
       <FlatButton
@@ -44,7 +54,7 @@ class CourseAddModal extends Component {
         label="Submit"
         primary={true}
         disabled={this.state.courseName.length === 0}
-        onClick={this.handleClose}
+        onClick={this.handleSubmit}
       />,
     ];
 
@@ -82,4 +92,4 @@ const styles = {
   }
 }
 
-export default CourseAddModal;
+export default connect()(CourseAddModal);
