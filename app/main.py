@@ -20,6 +20,7 @@ import io
 import os
 import cloud_vision as cv
 import elastic_search as es
+import docx2txt
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
@@ -81,18 +82,6 @@ def index():
     </form>
     '''
 
-@app.route('/postcourse')
-def index2():
-    return '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form method=post action="/api/courses" enctype=multipart/form-data>
-      <p><input type=text name=name>
-         <input type=submit value=Create>
-    </form>
-    '''
-
 @app.route('/api/courses', methods=['GET', 'POST', 'DELETE'])
 def courses():
     if request.method == 'GET':
@@ -100,7 +89,7 @@ def courses():
         for course in es.get_courses():
             js.append({ 'name' : course[1], 
                         'course_id' : course[0],
-                        'thumbnail' : 'TODO use actual thumbnail'
+                        'type' : extract_extension(course[1])
                       })
         return Response(json.dumps(js),  mimetype='application/json')
 
@@ -110,7 +99,7 @@ def courses():
         js = {
                 'name' : course_name,
                 'course_id' : generated_id,
-                'thumbnail' : 'TODO use actual thumbnail'
+                'type' : extract_extension(course_name)
              }
         return Response(json.dumps(js),  mimetype='application/json')
     elif request.method == 'DELETE':
@@ -151,13 +140,11 @@ def upload_file(course_id):
             elif file.mimetype == 'image/jpg':
                 content = read_img_file(file_path, file.filename)
                 text = ' '.join(cv.get_doc_text_strings(content))
-                print(text)
                 es.create_document(course_id, file.filename, file_id, text)
                 return message_response(201, "Received png file and uploaded to elasticsearch", "application/json")
             elif file.mimetype == 'image/jpeg':
                 content = read_img_file(file_path, file.filename)
                 text = ' '.join(cv.get_doc_text_strings(content))
-                print(text)
                 es.create_document(course_id, file.filename, file_id, text)
                 return message_response(201, "Received png file and uploaded to elasticsearch", "application/json")
             elif file.mimetype == 'image/bmp':
@@ -165,8 +152,21 @@ def upload_file(course_id):
                 text = ' '.join(cv.get_doc_text_strings(content))
                 es.create_document(course_id, file.filename, file_id, text)
                 return message_response(201, "Received png file and uploaded to elasticsearch", "application/json")
+            elif file.mimetype == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                text = read_docx_file(file_path, file.filename)
+                images_path = os.path.join(file_path, "images")
+                if os.path.exists(images_path):
+                    files = [f for f in listdir(images_path) if isfile(join(images_path, f))]
+                    image_bytes = read_img_file(images_path, files[0])
+                    text += ' '
+                    text += ' '.join(cv.get_doc_text_strings(image_bytes))
+                es.create_document(course_id, file.filename, file_id, text)
+                return message_response(201, "Received docx file and uploaded to elasticsearch", "application/json")
+                pass
             else:
                 return message_response(400, "Uploaded file has an unrecognized mimetype", 'application/json')
+        else:
+            return message_response(400, "Uploaded file does not have a supported extension", 'application/json')
 
 @app.route('/api/files/<file_id>', methods=['GET'])
 def get_file(file_id):
@@ -188,7 +188,7 @@ def search_files(course_id):
     for file_object in es.search(course_id, search_string):
         js.append({ 'name' : file_object[1], 
                     'course_id' : file_object[0],
-                    'thumbnail' : 'TODO use actual thumbnail'
+                    'type' : extract_extension(file_object[1])
                   })
     return Response(json.dumps(js),  mimetype='application/json')
 
@@ -197,16 +197,19 @@ def get_all_files(course_id):
     js = []
     for file_object in es.get_course_files(course_id):
         js.append({ 'name' : file_object[1], 
-                    'course_id' : file_object[0],
-                    'thumbnail' : 'TODO use actual thumbnail'
+                    'file_id' : file_object[0],
+                    'type' : extract_extension(file_object[1])
                   })
     return Response(json.dumps(js),  mimetype='application/json')
 
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'bmp', 'mp4'])
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'bmp', 'mp4', 'docx'])
 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def extract_extension(filename):
+    return '.' + filename.rsplit('.', 1)[1].lower()
 
 def read_txt_file(file_path, file_name):
     return file(os.path.join(file_path, file_name), 'r').read()
@@ -224,12 +227,19 @@ def read_pdf_file(file_path, file_name):
     converter.close()
     text = output.getvalue()
     output.close
-    return text 
+    return text
 
 def read_img_file(file_path, file_name):
     with io.open(os.path.join(file_path, file_name), 'rb') as image:
         content = image.read()
     return content
+
+def read_docx_file(file_path, file_name):
+    images_path = os.path.join(file_path, "images")
+    if not os.path.exists(images_path):
+        os.makedirs(images_path)
+    text = docx2txt.process(os.path.join(file_path, file_name), images_path)
+    return text
 
 def message_response(status_code, message, mime_type):
     return Response("{'message':'" + message + "'}", status=status_code, mimetype=mime_type)

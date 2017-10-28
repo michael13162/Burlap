@@ -97,8 +97,9 @@ def search(course_id, query):
     r.raise_for_status()
     parsed_json = json.loads(r.text)
     response_docs = parsed_json["hits"]["hits"]
-    return [(doc["_id"].lower(), doc["_source"]["file_name"])
+    docs = [(doc["_id"].lower(), doc["_source"]["file_name"], float(doc["_score"]))
             for doc in response_docs]
+    return [doc for doc in docs if doc[2] > .1]
 
 def get_course_files(course_id):
     url =  url_base + "/{}/{}/{}".format(course_id.lower(), "documents", "_search")
