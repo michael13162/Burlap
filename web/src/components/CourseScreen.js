@@ -6,6 +6,8 @@ import { List, ListItem } from 'material-ui/List';
 import FileDownload from 'material-ui/svg-icons/file/file-download';
 import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
+
+import { blue500, red500 } from 'material-ui/styles/colors';
 import Doc from 'material-ui/svg-icons/action/description';
 import Image from 'material-ui/svg-icons/image/image';
 import Pdf from 'material-ui/svg-icons/image/picture-as-pdf';
@@ -75,7 +77,7 @@ class CourseScreen extends Component {
       case 'jpg':
       case 'jpeg':
       case 'bmp':
-        return <Image />;
+        return <Image color={red500} />;
       case 'mp4':
         return <Tv />;
       case 'pdf':
@@ -83,7 +85,7 @@ class CourseScreen extends Component {
       case 'txt':
       case 'docx':
       default:
-        return <Doc />
+        return <Doc color={blue500} />
     }
   }
 
