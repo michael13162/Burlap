@@ -1,7 +1,7 @@
 import requests
 import json
 
-url_base = 'http://localhost:9200'
+url_base = 'http://elasticsearch-1-1-vm:9200'
 
 def create_course(course_name):
     data = {
