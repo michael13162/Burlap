@@ -10,3 +10,12 @@ export function getFilesForCourse(courseId) {
     .catch(reject);
   });
 }
+
+export function uploadFiles(files, courseId) {
+  return Promise.all(files.map(x => {
+    const formData = new FormData();
+    formData.append('file', x);
+
+    return axios.post(`courses/${courseId}/files`, formData);
+  }));
+}

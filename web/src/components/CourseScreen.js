@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
-import axios from 'axios';
 import { List, ListItem } from 'material-ui/List';
 import FileDownload from 'material-ui/svg-icons/file/file-download';
 import IconButton from 'material-ui/IconButton';
@@ -10,7 +9,7 @@ import IconButton from 'material-ui/IconButton';
 import Course from '../models/Course';
 import { spacing, titleSize, listMaxWidth, listBorder, borderGrey } from '../styles/constants';
 import { getCourses } from '../state/actions';
-import { getFilesForCourse } from '../services/filesService';
+import { getFilesForCourse, uploadFiles } from '../services/filesService';
 import { apiUrl } from '../config';
 
 class CourseScreen extends Component {
@@ -22,6 +21,10 @@ class CourseScreen extends Component {
   componentDidMount() {
     this.props.dispatch(getCourses());
 
+    this.loadFiles();
+  }
+
+  loadFiles = () => {
     getFilesForCourse(this.props.match.params.courseId)
     .then(x => {
       this.setState({
@@ -31,10 +34,12 @@ class CourseScreen extends Component {
   }
 
   handleDrop = (files) => {
-    const formData = new FormData();
-    formData.append('file', files[0]);
-
-    axios.post(`courses/${this.props.match.params.courseId}/files`, formData);
+    uploadFiles(files, this.props.match.params.courseId)
+    .then(() => {
+      setTimeout(() => {
+        this.loadFiles();
+      }, 500); // server has some sort of delay before reporting the file
+    });
   }
 
   renderDownloadButton = (fileId, name) => {
