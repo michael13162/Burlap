@@ -192,6 +192,16 @@ def search_files(course_id):
                   })
     return Response(json.dumps(js),  mimetype='application/json')
 
+@app.route('/api/courses/<course_id>', methods=['GET'])
+def get_all_files(course_id):
+    js = []
+    for file_object in es.get_course_files(course_id):
+        js.append({ 'name' : file_object[1], 
+                    'course_id' : file_object[0],
+                    'thumbnail' : 'TODO use actual thumbnail'
+                  })
+    return Response(json.dumps(js),  mimetype='application/json')
+
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'bmp', 'mp4'])
 
 def allowed_file(filename):
