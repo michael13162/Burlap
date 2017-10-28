@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 
-import CourseListScreen from './components/CourseListScreen';
-import CourseScreen from './components/CourseScreen';
+import CourseListScreen from './CourseListScreen';
+import CourseScreen from './CourseScreen';
 
 class Routes extends Component {
   render() {
