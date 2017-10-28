@@ -84,13 +84,12 @@ def index():
 @app.route('/api/courses', methods=['GET', 'POST'])
 def courses():
     if request.method == 'GET':
-        '''
         js = [
-               { 'name' : 'get_test_name',
-                 'course_id' : 'get_test_course_id', 
+               { 'name' : 'CS 4400',
+                 'course_id' : 'id-1',
                  'thumbnail' : 'get_test_thumbnail'},
-               { 'name' : 'get_test_name',
-                 'course_id' : 'get_test_course_id', 
+               { 'name' : 'CS 4530',
+                 'course_id' : 'id-2',
                  'thumbnail' : 'get_test_thumbnail'
                }
              ]
@@ -101,6 +100,7 @@ def courses():
                         'course_id' : course[0],
                         'thumbnail' : 'TODO use actual thumbnail'
                       })
+        '''
         return Response(json.dumps(js),  mimetype='application/json')
 
     elif request.method == 'POST':
