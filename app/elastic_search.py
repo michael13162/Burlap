@@ -77,5 +77,3 @@ def search(course_id, query):
     return [(course["_id"], course["_source"]["course_name"])
             for course in response_docs]
 
-create_document("test_course", "test_file", "test_file_id", "test text")
-print search("test_course", "test")

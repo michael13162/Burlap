@@ -15,6 +15,7 @@
 import logging
 import json
 import uuid
+from cStringIO import StringIO
 import io
 import os
 import cloud_vision as cv
@@ -130,7 +131,7 @@ def upload_file(course_id):
             return message_response(400, "No file chosen", 'application/json')
         if file and allowed_file(file.filename):
             file_id = uuid.uuid4()
-            file_path = app.static_folder + '\\files\\' + str(file_id)
+            file_path = os.path.join(app.static_folder, "files", str(file_id))
             if not os.path.exists(file_path):
                 os.makedirs(file_path)
             file.save(join(file_path, file.filename))
@@ -170,8 +171,8 @@ def upload_file(course_id):
 @app.route('/api/files/<file_id>', methods=['GET'])
 def get_file(file_id):
     if request.method == 'GET':
-        path = app.static_folder + '\\files\\' + file_id
-        if not os.path.exists(file_path):
+        path = os.path.join(app.static_folder, "files", str(file_id))
+        if not os.path.exists(path):
             return message_response(400, "Specified file id does not exist", 'application/json')
         files = [f for f in listdir(path) if isfile(join(path, f))]
         if len(files) == 0:
@@ -197,7 +198,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def read_txt_file(file_path, file_name):
-    return open(file_path + "\\" + file_name, 'r').read()
+    return file(os.path.join(file_path, file_name), 'r').read()
 
 def read_pdf_file(file_path, file_name):
     pagenums = set()
@@ -205,7 +206,7 @@ def read_pdf_file(file_path, file_name):
     manager = PDFResourceManager()
     converter = TextConverter(manager, output, laparams=LAParams())
     interpreter = PDFPageInterpreter(manager, converter)
-    infile = open(file_path + "\\" + file_name, 'rb')
+    infile = file(os.path.join(file_path, file_name), 'rb')
     for page in PDFPage.get_pages(infile, pagenums):
         interpreter.process_page(page)
     infile.close()
@@ -215,11 +216,12 @@ def read_pdf_file(file_path, file_name):
     return text 
 
 def read_img_file(file_path, file_name):
-    with io.open(file_path + "\\" + file_name, 'rb') as image:
+    with io.open(os.path.join(file_path, file_name), 'rb') as image:
         content = image.read()
     return content
 
 def message_response(status_code, message, mime_type):
     return Response("{'message':" + message + "}", status=status_code, mimetype=mime_type)
 
-app.run()
+app.run(host='0.0.0.0', port=80)
+
