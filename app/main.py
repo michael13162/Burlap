@@ -104,9 +104,12 @@ def courses():
                  'thumbnail' : 'post_test_thumbnail'
              } ]
         '''
-        generated_id = es.create_course(request.data)
+        course_name = request.get_json()['name']
+        # elastic search is broken right now
+        #generated_id = es.create_course(course_name)
+        generated_id = str(uuid.uuid4())
         js = {
-                'name' : request.data,
+                'name' : course_name,
                 'course_id' : generated_id,
                 'thumbnail' : 'TODO use actual thumbnail'
              }
