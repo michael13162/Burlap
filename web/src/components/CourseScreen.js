@@ -6,6 +6,12 @@ import { List, ListItem } from 'material-ui/List';
 import FileDownload from 'material-ui/svg-icons/file/file-download';
 import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
+import FileFolder from 'material-ui/svg-icons/file/folder';
+
+import Doc from 'material-ui/svg-icons/action/description';
+import Image from 'material-ui/svg-icons/image/image';
+import Pdf from 'material-ui/svg-icons/image/picture-as-pdf';
+import Tv from 'material-ui/svg-icons/hardware/tv';
 
 import Course from '../models/Course';
 import { spacing, titleSize, listMaxWidth, listBorder, borderGrey } from '../styles/constants';
@@ -65,12 +71,30 @@ class CourseScreen extends Component {
     );
   }
 
+  renderFileIcon = (type) => {
+    switch (type) {
+      case 'png':
+      case 'jpg':
+      case 'jpeg':
+      case 'bmp':
+        return <Image />;
+      case 'mp4':
+        return <Tv />;
+      case 'pdf':
+        return <Pdf />;
+      case 'txt':
+      case 'docx':
+      default:
+        return <Doc />
+    }
+  }
+
   renderFiles = () => {
     const { files } = this.state;
     if (files === null || files.length === 0) {
       return (
         <p style={styles.noFiles}>
-          No files. Upload some!
+          No files match '{this.state.fileSearch}'. Upload some!
         </p>
       );
     }
@@ -81,6 +105,7 @@ class CourseScreen extends Component {
           <ListItem
             key={x.fileId}
             primaryText={x.name}
+            leftIcon={this.renderFileIcon(x.type)}
             rightIconButton={this.renderDownloadButton(x.fileId, x.name)}
             containerElement={
               <a
