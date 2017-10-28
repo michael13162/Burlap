@@ -12,15 +12,26 @@ def get_doc_text_strings(content):
 
     # Makes a client
     client = vision.ImageAnnotatorClient(credentials=scoped_credentials)
-    # Creates a google.cloud.vision image
-    image = types.Image(content=content)
 
-    # Request the gathered data
-    response = client.document_text_detection(image=image)
+    # Request the data for labels and doc_text
+    annotations = client.annotate_image({
+                'image': {
+                    'content': content,
+                },
+                'features': [{
+                    'type': vision.enums.Feature.Type.DOCUMENT_TEXT_DETECTION,
+                }, {
+                    'type': vision.enums.Feature.Type.LABEL_DETECTION,
+                    }]
+            })
     document = response.full_text_annotation
-
-    # Get all the words that were found in the image
+    labels = annotations.label_annotations
+   
     myList = []
+    for label in labels:
+        myList.append(label.description)
+        
+    # Get all the words that were found in the image
     for page in document.pages:
         for block in page.blocks:
             block_words = []
