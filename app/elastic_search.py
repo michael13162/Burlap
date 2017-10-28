@@ -17,7 +17,12 @@ def create_course(course_name):
     r = requests.post(url, headers=headers, data=json_data)
     r.raise_for_status()
     parsed_json = json.loads(r.text)
-    return parsed_json["_id"]
+    course_id = parsed_json["_id"]
+
+    url = url_base + "/{}".format(course_id)
+    r = requests.put(url)
+    r.raise_for_status()
+    return course_id
 
 def get_courses():
     url =  url_base + "/{}/{}/{}".format("u_of_utah", "courses", "_search")
@@ -93,5 +98,5 @@ def search(course_id, query):
     r.raise_for_status()
     parsed_json = json.loads(r.text)
     response_docs = parsed_json["hits"]["hits"]
-    return [(course["_id"], course["_source"]["course_name"])
-            for course in response_docs]
+    return [(doc["_id"], doc["_source"]["file_name"])
+            for doc in response_docs]
