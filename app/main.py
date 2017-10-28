@@ -89,7 +89,7 @@ def courses():
         for course in es.get_courses():
             js.append({ 'name' : course[1], 
                         'course_id' : course[0],
-                        'type' : extract_extension(course[1])
+                        'type' : 'course_type'
                       })
         return Response(json.dumps(js),  mimetype='application/json')
 
@@ -99,7 +99,7 @@ def courses():
         js = {
                 'name' : course_name,
                 'course_id' : generated_id,
-                'type' : extract_extension(course_name)
+                'type' : 'course_type'
              }
         return Response(json.dumps(js),  mimetype='application/json')
     elif request.method == 'DELETE':
@@ -209,7 +209,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def extract_extension(filename):
-    return '.' + filename.rsplit('.', 1)[1].lower()
+    return filename.rsplit('.', 1)[1].lower()
 
 def read_txt_file(file_path, file_name):
     return file(os.path.join(file_path, file_name), 'r').read()
